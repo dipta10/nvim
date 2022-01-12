@@ -32,8 +32,8 @@ keymap("n", "<C-Left>", ":vertical resize -2<CR>", opts)
 keymap("n", "<C-Right>", ":vertical resize +2<CR>", opts)
 
 -- Naviagate buffers
-keymap("n", "<S-l>", ":bnext<CR>", opts)
-keymap("n", "<S-h>", ":bprevious<CR>", opts)
+keymap("n", "<C-n>", ":bnext<CR>", opts)
+keymap("n", "<C-b>", ":bprevious<CR>", opts)
 
 -- Move text up and down
 keymap("n", "<A-j>", "<Esc>:m .+1<CR>==gi", opts)
@@ -41,7 +41,7 @@ keymap("n", "<A-k>", "<Esc>:m .-2<CR>==gi", opts)
 
 -- Insert --
 -- Press jk fast to enter
-keymap("i", "jk", "<ESC>", opts)
+-- keymap("i", "jk", "<ESC>", opts)
 
 -- Visual --
 -- Stay in indent mode
@@ -92,10 +92,10 @@ keymap(
   "<cmd>lua require('telescope.builtin').find_files(require('telescope.themes').get_dropdown{previewer = false})<cr>",
   opts
 )
-keymap("n", "<C-t>", "<cmd>lua vim.lsp.buf.document_symbol()<cr>", opts)
-keymap("n", "<C-s>", "<cmd>vsplit<cr>", opts)
+-- keymap("n", "<C-t>", "<cmd>lua vim.lsp.buf.document_symbol()<cr>", opts)
+keymap("n", "<C-w>v", "<cmd>vsplit<cr>", opts)
 keymap("n", "<C-z>", "<cmd>ZenMode<cr>", opts)
-keymap("n", "<c-n>", ":e ~/Notes/<cr>", opts)
+-- keymap("n", "<c-n>", ":e ~/Notes/<cr>", opts)
 -- keymap("n", "<C-\\>", "<cmd>vsplit<cr>", opts)
 -- vim.cmd[[nnoremap c* /\<<C-R>=expand('<cword>')<CR>\>\C<CR>``cgn]]
 -- vim.cmd[[nnoremap c# ?\<<C-R>=expand('<cword>')<CR>\>\C<CR>``cgN]]
@@ -105,3 +105,33 @@ keymap("n", "<c-n>", ":e ~/Notes/<cr>", opts)
 keymap("n", "gx", [[:silent execute '!$BROWSER ' . shellescape(expand('<cfile>'), 1)<CR>]], opts)
 -- Change '<CR>' to whatever shortcut you like :)
 vim.api.nvim_set_keymap('n', '<CR>', '<cmd>NeoZoomToggle<CR>', { noremap=true, silent=true, nowait=true })
+
+-- Custom Old Navigation 
+-- keymap("n", "<C-n>", "gt", opts) -- select right split tab
+-- keymap("n", "<C-b>", "gT", opts)
+-- keymap("t", "<C-n>", "gt", opts)
+-- keymap("t", "<C-b>", "gT", opts)
+
+
+-- Save using ctrl + s
+keymap("n", "<C-s>", "<cmd>w<cr>", opts)
+keymap("i", "<C-s>", "<cmd>w<cr><esc>", opts)
+
+
+-- running files
+filename = vim.fn.expand('%')
+-- filename = vim.api.nvim_buf_get_name(0)
+
+file_extension = vim.fn.expand('%:e')
+command = "<cmd>0TermExec cmd='python3 ".. filename .."'<cr>"
+if file_extension == 'py' then
+  command = "<cmd>0TermExec cmd='python3 ".. filename .."'<cr>"
+end
+
+
+keymap("n", "<F9>", 
+  -- "<cmd>lua require('toggleterm').toggle(0)<cr>", 
+  -- "<cmd>lua require('toggleterm').toggle(0).exec_command(\"python3\", 1)<cr>", 
+  -- "<cmd>0TermExec cmd='python3 '" .. filename .. "'<cr>",
+  command,
+  opts)
